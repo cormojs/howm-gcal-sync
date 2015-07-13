@@ -1,0 +1,5 @@
+*~
+*.omc
+config.txt
+.omakedb
+.omakedb.lock

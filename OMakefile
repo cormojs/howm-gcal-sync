@@ -1,0 +1,19 @@
+PROGRAM = howm-gcal-sync
+
+
+NATIVE_ENABLE = true
+
+# ocamlfind を使う場合
+USE_OCAMLFIND = true
+# ocamlfind で探して使うパッケージ
+OCAMLPACKS = gapi-ocaml config-file netstring extlib
+
+
+.SUBDIRS: src
+
+# 掃除
+.PHONY: clean
+clean:
+  rm \
+     $(filter-proper-targets $(ls R, src))
+
