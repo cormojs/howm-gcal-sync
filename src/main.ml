@@ -9,6 +9,8 @@ let client_secret_cp = new Config_file.string_cp ~group ["client_secret"] "" ""
 let redirect_uri_cp = new Config_file.string_cp ~group ["redirect_uri"] "" ""
 let access_token_cp = new Config_file.string_cp ~group ["access_token"] "" ""
 let refresh_token_cp = new Config_file.string_cp ~group ["refresh_token"] "" ""
+let app_name_cp = new Config_file.string_cp ~group ["app_name"] "" ""
+let howm_root_cp = new Config_file.string_cp ~group ["howm_root"] "" ""
 
 let do_request interact = 
   let state = GapiCurl.global_init () in
@@ -69,7 +71,7 @@ let register_event = function
   | { Howm.date = None; title; content; flag } -> ()
   | { Howm.date = (Some d); title; content; flag } as event -> 
     let config = { GapiConfig.default with
-      GapiConfig.application_name = "howm-gcal-sync";
+      GapiConfig.application_name = app_name_cp#get;
       GapiConfig.auth = GapiConfig.OAuth2 { GapiConfig.client_id = client_id_cp#get;
     					    GapiConfig.client_secret = client_secret_cp#get;
     					    GapiConfig.refresh_access_token = None } } in
@@ -99,7 +101,7 @@ let () =
   if access_token_cp#get = "" || refresh_token_cp#get = "" then 
     authorize ()
   else
-    Howm.listFiles "/Users/cormo/Dropbox/howm" 
+    Howm.listFiles howm_root_cp#get
     |> List.map Howm.read_file
     |> List.concat
     |> List.filter (fun e -> e.Howm.flag = Some "@" || e.Howm.flag = Some "!")
