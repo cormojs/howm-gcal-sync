@@ -1,0 +1,4 @@
+FILES= main howm
+OCamlProgram(howm-gcal-sync, $(FILES))
+
+.DEFAULT: howm-gcal-sync$(EXE)
